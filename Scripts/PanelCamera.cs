@@ -21,13 +21,11 @@ namespace Assets.Scripts.SimuUI
         // Start is called before the first frame update
         void Start()
         {
-            btn_SwitchCamera?.onClick.AddListener(() => { });
             btn_CameraPanelHide?.onClick.AddListener(() =>
             {
                 isActive = !isActive;
                 SetPanelActive(isActive);
             });
-
         }
         public override void SetPanelActive(bool value)
         {
