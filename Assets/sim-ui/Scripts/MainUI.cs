@@ -28,12 +28,6 @@ namespace Assets.Scripts.SimuUI
         {
             isMouseOnUI = EventSystem.current.IsPointerOverGameObject();
         }
-
-        public void RResetCar()
-        {
-        }
-        public bool isCarCameraMain;
-
         private List<ISimuPanel> panels = new List<ISimuPanel>();
         public void CloseLastPanel()
         {
@@ -55,11 +49,11 @@ namespace Assets.Scripts.SimuUI
         [MenuItem("Asset/CreateSimuUI")]
         public static void SetObj()
         {
-            GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.autocore.simuui/Prefabs/SimuUI.prefab");
+            GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.autocore.sim-ui/Prefabs/SimuUI.prefab");
             if (go == null)
             {
                 Debug.Log("null1");
-                go = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/RotateMe/Prefabs/Cube.prefab");
+                go = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/sim-ui/Prefabs/Cube.prefab");
             }
             if (go == null)
             {

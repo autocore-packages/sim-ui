@@ -62,8 +62,9 @@ namespace Assets.Scripts.SimuUI
         }
 
         // Update is called once per frame
-        void Update()
+        public void UpdateImage(float throttle,float brake,float steer,float speed,float speed_expect)
         {
+            configs.Add(new Config { throttle = throttle,brake=brake,steer=steer,speed=speed,speed_expect=speed_expect }) ;
             Array.Copy(m_PixelsBg, m_Pixels, m_Pixels.Length);//全重置为背景色
             int samplesOnScreen = (int)(widthSeconds / Time.fixedDeltaTime);//在屏幕里显示的点数
             int stepsBack = (int)(timeTravel / Time.fixedDeltaTime); //回溯的点数

@@ -18,6 +18,7 @@ namespace Assets.Scripts.SimuUI
         public Text text_exceptSpeed;
         public Text text_Odom;
         public Image image_wheel;
+        private MessageShow ms;
         private Animation Anim_PanelMessage
         {
             get
@@ -30,22 +31,23 @@ namespace Assets.Scripts.SimuUI
         // Start is called before the first frame update
         void Start()
         {
+            ms = GetComponent<MessageShow>();
             btn_MessagePanelHide?.onClick.AddListener(() =>
             {
                 isActive = !isActive;
                 SetPanelActive(isActive);
             });
         }
-        void update()
+        public void UpdateCarmessage(float steer,string odom,float brake,float throttle,float speed,float expSpeed)
         {
-
-            //image_wheel.rectTransform.rotation = Quaternion.Euler(0, 0, -wd.steer * 540);
-            //text_Odom.text = wd.str_Odom;
-            //text_brake.text = wd.brake.ToString("0.00");
-            //text_throttle.text = wd.throttle.ToString("0.00");
-            //text_steer.text = wd.steer.ToString("0.00");
-            //text_speed.text = (ObjTestCar.TestCar.SPC.Speed).ToString("0.00") + "km/h";
-            //text_exceptSpeed.text = ObjTestCar.TestCar.SPC.LinearVelocity.ToString();
+            image_wheel.rectTransform.rotation = Quaternion.Euler(0, 0, -steer * 540);
+            text_Odom.text = odom;
+            text_brake.text = brake.ToString("0.00");
+            text_throttle.text = throttle.ToString("0.00");
+            text_steer.text = steer.ToString("0.00");
+            text_speed.text = speed.ToString("0.00") + "km/h";
+            text_exceptSpeed.text = expSpeed.ToString();
+            ms.UpdateImage(throttle, brake, steer, speed, expSpeed);
         }
         public override void SetPanelActive(bool value)
         {
