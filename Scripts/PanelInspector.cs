@@ -3,6 +3,7 @@
  * Copyright (c) 2018 AutoCore
  */
 #endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -54,10 +55,7 @@ namespace Assets.Scripts.SimuUI
         /// 7 delete
         /// </summary>
         public GameObject[] attGameObjects;
-        public UnityAction[] actions;
-
-
-
+        public UnityAction[] SetInspectorActions;
         public InputField inputField_carAIspeed;
         public Button button_changeLeft;
         public Button button_changeRight;
@@ -80,38 +78,25 @@ namespace Assets.Scripts.SimuUI
             elementAttbutes = attbutes;
             for (int i = 0; i < elementAttbutes.attributes.Length; i++)
             {
-                if (elementAttbutes.attributes[i]) actions[i].Invoke();
+                if (elementAttbutes.attributes[i]) SetInspectorActions[i].Invoke();
             }
         }
-        public InputField inputField_name;
-        public InputField inputField_posX;
-        public InputField inputField_posY;
-        public InputField inputField_posZ;
-        public InputField inputField_rot;
-        public InputField inputField_scale;
-        private void SetNameAtt()
+        private Vector3 objPos;
+        private Vector3 ObjPos
         {
-            inputField_name.text = elementAttbutes.name;
+            get
+            {
+                return objPos;
+            }
+            set
+            {
+                objPos = value;
+                inputField_posX.text = ObjPos.x.ToString();
+                inputField_posY.text = ObjPos.y.ToString();
+                inputField_posZ.text = ObjPos.z.ToString();
+            }
         }
-        private void SetPosAtt()
-        {
-            ObjPos = elementAttbutes.pos;
-            inputField_posX.text = ObjPos.x.ToString();
-            inputField_posY.text = ObjPos.y.ToString();
-            inputField_posZ.text = ObjPos.z.ToString();
-        }
-        private void SetRotAtt()
-        {
-            inputField_rot.text = elementAttbutes.rot.ToString();
-        }
-        private void SetScaleAtt()
-        {
-            inputField_scale.text = elementAttbutes.sca.ToString();
-        }
-        private void SetDeleteAtt()
-        {
-            btn_DeleteObj.gameObject.SetActive(elementAttbutes.canDelete);
-        }
+        public UnityAction<ElementAttbutes> ElementUpdate;
 
         public GameObject AimPos;
         public Transform HumanOther;
@@ -138,78 +123,92 @@ namespace Assets.Scripts.SimuUI
             Toggle_isHumanRepeat.isOn = elementAttbutes.humanAtt.isRepeat;
             inputField_humanSpeed.text = elementAttbutes.humanAtt.speed.ToString();
         }
+
+        public InputField inputField_name;
+        public InputField inputField_posX;
+        public InputField inputField_posY;
+        public InputField inputField_posZ;
+        public InputField inputField_rot;
+        public InputField inputField_scale;
         public Button button_SwitchLight;
         public InputField inputField_switchtime;
         public InputField inputField_waittime;
-        private void SetTrafficAtt()
-        {
-            inputField_switchtime.text = elementAttbutes.trafficLigghtAtt.timeSwitch.ToString();
-            inputField_waittime.text = elementAttbutes.trafficLigghtAtt.timeWait.ToString();
-        }
-        private void SetCarAIAtt()
-        {
-            inputField_carAIspeed.text = elementAttbutes.carAIAtt.spdCarAI.ToString();
-        }
-
         private void Start()
         {
-            actions = new UnityAction[]
+            SetInspectorActions = new UnityAction[]
             {
-                SetNameAtt,
-                SetPosAtt,
-                SetRotAtt,
-                SetScaleAtt,
+                ()=>{ },
+                ()=>{ ObjPos = elementAttbutes.pos;},
+                ()=>{ inputField_rot.text = elementAttbutes.rot.ToString();},
+                ()=>{ inputField_scale.text = elementAttbutes.sca.ToString(); },
+                ()=>{ inputField_carAIspeed.text = elementAttbutes.carAIAtt.spdCarAI.ToString(); },
                 SetHumanAtt,
-                SetTrafficAtt,
-                SetCarAIAtt,
-                SetDeleteAtt
+                ()=>{ inputField_switchtime.text = elementAttbutes.trafficLigghtAtt.timeSwitch.ToString();
+                    inputField_waittime.text = elementAttbutes.trafficLigghtAtt.timeWait.ToString();},
+                ()=>{ btn_DeleteObj.gameObject.SetActive(elementAttbutes.canDelete);}
             };
 
             cs.enabled = true;
             cs.verticalFit = ContentSizeFitter.FitMode.MinSize;
             inputField_name?.onEndEdit.AddListener((string value) =>
             {
+                elementAttbutes.name = value; 
+                ElementUpdate.Invoke(elementAttbutes);
             });
             inputField_posX?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
-                    ObjPos.x = num;
+                    objPos.x = num;
+                    elementAttbutes.pos = objPos;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_posY?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
-                    ObjPos.y = num;
+                    objPos.y = num;
+                    elementAttbutes.pos = objPos;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_posZ?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
-                    ObjPos.z = num;
+                    objPos.z = num;
+                    elementAttbutes.pos = objPos;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_rot?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
+                    elementAttbutes.rot = num;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_scale?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
+                    elementAttbutes.sca = num;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             Toggle_isHumanRepeat.onValueChanged.AddListener((bool value) =>
             {
+                elementAttbutes.humanAtt.isRepeat = value;
+                ElementUpdate.Invoke(elementAttbutes);
             });
             inputField_humanSpeed.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float speed))
                 {
+                    elementAttbutes.humanAtt.speed = speed;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             button_AddPos.onClick.AddListener(() =>
@@ -223,18 +222,24 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
+                    elementAttbutes.trafficLigghtAtt.timeSwitch = num;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_waittime?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
+                    elementAttbutes.trafficLigghtAtt.timeWait = num;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             inputField_carAIspeed?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
+                    elementAttbutes.carAIAtt.spdCarAI= num;
+                    ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             button_changeLeft?.onClick.AddListener(() =>
@@ -251,7 +256,5 @@ namespace Assets.Scripts.SimuUI
             });
             SetPanelActive(false);
         }
-
-        private Vector3 ObjPos;
     }
 }
