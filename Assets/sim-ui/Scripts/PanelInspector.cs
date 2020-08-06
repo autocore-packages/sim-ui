@@ -141,10 +141,10 @@ namespace Assets.Scripts.SimuUI
                 ()=>{ ObjPos = elementAttbutes.pos;},
                 ()=>{ inputField_rot.text = elementAttbutes.rot.ToString();},
                 ()=>{ inputField_scale.text = elementAttbutes.sca.ToString(); },
-                ()=>{ inputField_carAIspeed.text = elementAttbutes.carAIAtt.spdCarAI.ToString(); },
                 SetHumanAtt,
                 ()=>{ inputField_switchtime.text = elementAttbutes.trafficLigghtAtt.timeSwitch.ToString();
                     inputField_waittime.text = elementAttbutes.trafficLigghtAtt.timeWait.ToString();},
+                ()=>{ inputField_carAIspeed.text = elementAttbutes.carAIAtt.spdCarAI.ToString(); },
                 ()=>{ btn_DeleteObj.gameObject.SetActive(elementAttbutes.canDelete);}
             };
 
