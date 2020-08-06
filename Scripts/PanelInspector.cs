@@ -71,6 +71,7 @@ namespace Assets.Scripts.SimuUI
             for (int i = 0; i < elementAttbutes.attributes.Length; i++)
             {
                 attGameObjects[i].SetActive(elementAttbutes.attributes[i]);
+                if (elementAttbutes.attributes[i]) SetInspectorActions[i].Invoke();
             }
         }
         public void InspectorUpdate(ElementAttbutes attbutes)
@@ -107,7 +108,6 @@ namespace Assets.Scripts.SimuUI
         private List<AimPos> ListAimPos = new List<AimPos>();
         private void SetHumanAtt()
         {
-            ListAimPos.Clear();
             if (elementAttbutes.humanAtt.aimList != null)
             {
                 for (int i = 0; i < elementAttbutes.humanAtt.aimList.Count; i++)
@@ -137,7 +137,7 @@ namespace Assets.Scripts.SimuUI
         {
             SetInspectorActions = new UnityAction[]
             {
-                ()=>{ },
+                ()=>{ inputField_name.text=elementAttbutes.name; },
                 ()=>{ ObjPos = elementAttbutes.pos;},
                 ()=>{ inputField_rot.text = elementAttbutes.rot.ToString();},
                 ()=>{ inputField_scale.text = elementAttbutes.sca.ToString(); },
@@ -211,9 +211,6 @@ namespace Assets.Scripts.SimuUI
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
-            button_AddPos.onClick.AddListener(() =>
-            {
-            });
 
             button_SwitchLight?.onClick.AddListener(() =>
             {
@@ -241,18 +238,6 @@ namespace Assets.Scripts.SimuUI
                     elementAttbutes.carAIAtt.spdCarAI= num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
-            });
-            button_changeLeft?.onClick.AddListener(() =>
-            {
-            });
-            button_changeRight?.onClick.AddListener(() =>
-            {
-            });
-            button_SetAim?.onClick.AddListener(() =>
-            {
-            });
-            btn_DeleteObj?.onClick.AddListener(() =>
-            {
             });
             SetPanelActive(false);
         }
