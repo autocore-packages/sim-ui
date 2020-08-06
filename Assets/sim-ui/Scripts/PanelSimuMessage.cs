@@ -15,10 +15,7 @@ namespace Assets.Scripts.SimuUI
         public Text text_Control;
         void Start()
         {
-            //text_mode.text = TestConfig.TestMode.TestModeName;
             text_version.text = Application.version;
-            //text_IP.text = ROS_Node.Config.ros_master_uri.Replace("http://", string.Empty);
-            //SetControlModeText(ObjTestCar.TestCar.WD.IsHandDrive);
             button_exit?.onClick.AddListener(() =>
             {
                 SetPanelActive(false);
@@ -46,9 +43,19 @@ namespace Assets.Scripts.SimuUI
                 countFrame = 0;
             }
         }
-        public void SetControlModeText(bool value)
+        public void SetControlModeText(string text)
         {
-            text_Control.text = value ? "KeyBoard" : "ROSControl";
+            text_Control.text = text;
+        }
+
+        public void SetModeText(string text)
+        {
+            text_mode.text = text;
+        }
+        public void SetIPText(string text)
+        {
+
+            text_IP.text = text.Replace("http://", string.Empty);
         }
     }
 }
