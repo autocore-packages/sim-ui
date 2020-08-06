@@ -97,7 +97,7 @@ namespace Assets.Scripts.SimuUI
                 inputField_posZ.text = ObjPos.z.ToString();
             }
         }
-        public UnityAction<ElementAttbutes> ElementUpdate;
+        public UnityAction<ElementAttbutes> ElementUpdate=new UnityAction<ElementAttbutes>((value)=> { });
 
         public GameObject AimPos;
         public Transform HumanOther;
