@@ -17,6 +17,10 @@ namespace Assets.Scripts.SimuUI
         public Button btn_Delete;
         void Start()
         {
+            if (!PanelInspector.Instance.ListAimPos.Contains(this))
+            {
+                PanelInspector.Instance.ListAimPos.Add(this);
+            }
             inputField_X.onEndEdit.AddListener(
                 (string value) =>
                 {
