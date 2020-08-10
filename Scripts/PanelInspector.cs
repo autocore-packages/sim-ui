@@ -152,7 +152,7 @@ namespace Assets.Scripts.SimuUI
             }
         }
         public List<AimPos> ListAimPos = new List<AimPos>();
-        private List<Vector3> humanPoses;
+        private List<Vector3> humanPoses=new List<Vector3>();
         private List<Vector3> HumanPoses
         {
             get
@@ -161,20 +161,18 @@ namespace Assets.Scripts.SimuUI
             }
             set
             {
-                if (value.TrueForAll(humanPoses.Contains))
+                if (humanPoses.TrueForAll(value.Contains))
                 {
                     humanPoses = value;
-                    while (ListAimPos.Count > humanPoses.Count)
+                    foreach (AimPos item in ListAimPos)
                     {
-                        Destroy(ListAimPos[ListAimPos.Count - 1].gameObject);
-                        ListAimPos.RemoveAt(ListAimPos.Count - 1);
+                        Destroy(item.gameObject);
+                        ListAimPos.Remove(item);
                     }
-                    while (attGameObjects[4].transform.childCount -2 < humanPoses.Count)
-                        Instantiate(AimPos, attGameObjects[4].transform);
-                    HumanOther.SetAsLastSibling();
+                    if (ListAimPos.Count > 0) Debug.Log("list Error");
                     for (int i = 0; i < humanPoses.Count; i++)
                     {
-                        AimPos aim = attGameObjects[4].transform.GetChild(i + 1).GetComponent<AimPos>();
+                        AimPos aim = Instantiate(AimPos, attGameObjects[4].transform).GetComponent<AimPos>();
                         if (aim == null) 
                         {
                             Debug.Log("Human error");
@@ -182,6 +180,7 @@ namespace Assets.Scripts.SimuUI
                         Vector3 pos = humanPoses[i];
                         aim.Init(pos);
                     }
+                    HumanOther.SetAsLastSibling();
                     Toggle_isHumanWait.isOn = elementAttbutes.humanAtt.isWait;
                     Toggle_isHumanRepeat.isOn = elementAttbutes.humanAtt.isRepeat;
                     inputField_humanSpeed.text = elementAttbutes.humanAtt.speed.ToString();
