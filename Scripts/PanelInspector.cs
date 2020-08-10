@@ -161,31 +161,33 @@ namespace Assets.Scripts.SimuUI
             }
             set
             {
-                if (!humanPoses.TrueForAll(value.Contains)||humanPoses.Count!=value.Count)
+                int count = value.Count - ListAimPos.Count;
+                if (count > 0)
                 {
-                    Debug.Log("update");
-                    humanPoses = value;
-                    foreach (AimPos item in ListAimPos)
+                    for (int i = 0; i < count; i++)
                     {
-                        Destroy(item.gameObject);
-                        ListAimPos.Remove(item);
-                    }
-                    if (ListAimPos.Count > 0) Debug.Log("list Error");
-                    for (int i = 0; i < humanPoses.Count; i++)
-                    {
-                        AimPos aim = Instantiate(AimPos, attGameObjects[4].transform).GetComponent<AimPos>();
-                        if (aim == null) 
-                        {
-                            Debug.Log("Human error");
-                        }
-                        Vector3 pos = humanPoses[i];
-                        aim.Init(pos);
+                        Instantiate(AimPos, attGameObjects[4].transform);
                     }
                     HumanOther.SetAsLastSibling();
-                    Toggle_isHumanWait.isOn = elementAttbutes.humanAtt.isWait;
-                    Toggle_isHumanRepeat.isOn = elementAttbutes.humanAtt.isRepeat;
-                    inputField_humanSpeed.text = elementAttbutes.humanAtt.speed.ToString();
                 }
+                else if(count<0)
+                {
+                    for (int i = count; i < ListAimPos.Count; i++)
+                    {
+                        Destroy(ListAimPos[i].gameObject);
+                        ListAimPos.RemoveAt(i);
+                    }
+                }
+                for (int i = 0; i < ListAimPos.Count; i++)
+                {
+                    if (value[i] != ListAimPos[i].Value)
+                    {
+                        ListAimPos[i].Init(value[i]);
+                    }
+                }
+                Toggle_isHumanWait.isOn = elementAttbutes.humanAtt.isWait;
+                Toggle_isHumanRepeat.isOn = elementAttbutes.humanAtt.isRepeat;
+                inputField_humanSpeed.text = elementAttbutes.humanAtt.speed.ToString();
             }
         }
 
