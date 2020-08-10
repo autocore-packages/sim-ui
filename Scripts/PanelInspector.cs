@@ -46,7 +46,7 @@ namespace Assets.Scripts.SimuUI
     }
     public class PanelInspector : PanelBase<PanelInspector>, ISimuPanel
     {
-        private ElementAttbutes elementAttbutes;
+        public ElementAttbutes elementAttbutes;
         /// <summary>
         /// 0 name
         /// 1 pos
