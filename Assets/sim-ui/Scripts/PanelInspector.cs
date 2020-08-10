@@ -161,8 +161,9 @@ namespace Assets.Scripts.SimuUI
             }
             set
             {
-                if (humanPoses.TrueForAll(value.Contains)||humanPoses.Count!=value.Count)
+                if (!humanPoses.TrueForAll(value.Contains)||humanPoses.Count!=value.Count)
                 {
+                    Debug.Log("update");
                     humanPoses = value;
                     foreach (AimPos item in ListAimPos)
                     {
