@@ -166,7 +166,7 @@ namespace Assets.Scripts.SimuUI
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        Instantiate(AimPos, attGameObjects[4].transform);
+                        ListAimPos.Add(Instantiate(AimPos, attGameObjects[4].transform).GetComponent<AimPos>());
                     }
                     HumanOther.SetAsLastSibling();
                 }
@@ -178,7 +178,8 @@ namespace Assets.Scripts.SimuUI
                         ListAimPos.RemoveAt(i);
                     }
                 }
-                for (int i = 0; i < ListAimPos.Count; i++)
+                if (value.Count == 0) return;
+                for (int i = 0; i < value.Count; i++)
                 {
                     if (value[i] != ListAimPos[i].Value)
                     {
@@ -262,7 +263,7 @@ namespace Assets.Scripts.SimuUI
         {
             SetInspectorActions = new UnityAction[]
             {
-                ()=>{ objName=elementAttbutes.name; },
+                ()=>{ ObjName=elementAttbutes.name; },
                 ()=>{ ObjPos = elementAttbutes.pos;},
                 ()=>{ Rotate=elementAttbutes.rot; },
                 ()=>{ Scale =elementAttbutes.sca; },
