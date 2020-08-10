@@ -11,6 +11,13 @@ namespace Assets.Scripts.SimuUI
 {
     public class AimPos : MonoBehaviour
     {
+        public int index
+        {
+            get
+            {
+                return transform.GetSiblingIndex() - 1;
+            }
+        }
         public Vector3 Value;
         public InputField inputField_X;
         public InputField inputField_Y;
@@ -27,7 +34,7 @@ namespace Assets.Scripts.SimuUI
                     if (float.TryParse(value, out float num))
                     {
                         Value.x = num;
-                        //ElementsManager.Instance.SelectedElement.GetComponent<ObjHuman>().PosList[transform.GetSiblingIndex() - 1] = Value;
+                        SetInspector();
                     }
                 });
             inputField_Y.onEndEdit.AddListener(
@@ -35,8 +42,8 @@ namespace Assets.Scripts.SimuUI
                 {
                     if (float.TryParse(value, out float num))
                     {
-                        Value.z = num;
-                        //ElementsManager.Instance.SelectedElement.GetComponent<ObjHuman>().PosList[transform.GetSiblingIndex() - 1] = Value;
+                        Value.z = num; 
+                        SetInspector();
                     }
                 });
         }
@@ -48,9 +55,15 @@ namespace Assets.Scripts.SimuUI
             btn_Delete.onClick.RemoveAllListeners();
             btn_Delete.onClick.AddListener(() =>
             {
-               // ElementsManager.Instance.SelectedElement.GetComponent<ObjHuman>().PosList.RemoveAt(transform.GetSiblingIndex() - 1);
+                PanelInspector.Instance.elementAttbutes.humanAtt.aimList.RemoveAt(index);
+                PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
                 Destroy(gameObject);
             });
+        }
+        public void SetInspector()
+        {
+            PanelInspector.Instance.elementAttbutes.humanAtt.aimList[index] = Value;
+            PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
         }
 
         private void OnDestroy()
