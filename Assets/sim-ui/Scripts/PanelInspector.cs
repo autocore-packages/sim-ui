@@ -15,35 +15,6 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.SimuUI
 {
-    public class ElementAttbutes
-    {
-        public bool[] attributes=new bool[8] {false,false,false,false,false,false,false,false };
-        public string name;//0
-        public Vector3 pos;//1
-        public float sca;//2
-        public float rot;//3
-        public CarAIAtt carAIAtt;//4
-        public HumanAtt humanAtt;//5
-        public TrafficLigghtAtt trafficLigghtAtt;//6
-        public bool canDelete;//7
-    }
-    public class CarAIAtt
-    {
-        public float spdCarAI;
-    }
-    public class HumanAtt
-    {
-        public float speed;
-        public bool isRepeat;
-        public bool isWait;
-        public List<Vector3> aimList;
-    }
-    public class TrafficLigghtAtt
-    {
-        public float timeSwitch;
-        public float timeWait;
-        public int mode;
-    }
     public class PanelInspector : PanelBase<PanelInspector>, ISimuPanel
     {
         public ElementAttbutes elementAttbutes;
@@ -58,6 +29,16 @@ namespace Assets.Scripts.SimuUI
         /// 7 delete
         /// </summary>
         public GameObject[] attGameObjects;
+        public GameObject attName;
+        public GameObject attPos;
+        public GameObject attRot;
+        public GameObject attScale;
+        public GameObject attHuman;
+        public GameObject attCarAI;
+        public GameObject attTrafficLight;
+        public GameObject attDelete;
+
+
         public UnityAction[] SetInspectorActions;
         public InputField inputField_carAIspeed;
         public Button button_changeLeft;
@@ -71,179 +52,61 @@ namespace Assets.Scripts.SimuUI
         {
             SetPanelActive(true);
             elementAttbutes = attbutes;
-            for (int i = 0; i < elementAttbutes.attributes.Length; i++)
-            {
-                attGameObjects[i].SetActive(elementAttbutes.attributes[i]);
-                if (elementAttbutes.attributes[i]) SetInspectorActions[i].Invoke();
-            }
+            attName.SetActive(elementAttbutes.isShowName);
+            attScale.SetActive(elementAttbutes.isShowSca);
+            attRot.SetActive(elementAttbutes.isShowRot);
+            attPos.SetActive(elementAttbutes.isShowPos);
+            attTrafficLight.SetActive(elementAttbutes.isShowTraffic);
+            attHuman.SetActive(elementAttbutes.isShowHuman);
+            attCarAI.SetActive(elementAttbutes.isShowCarAI);
+            attDelete.SetActive(elementAttbutes.isShowDelete);
+            if (elementAttbutes.isShowHuman) UpdateHumanData();
+            if (elementAttbutes.isShowCarAI) UpdateCarAIData();
+            if (elementAttbutes.isShowTraffic) UpdateTrafficLightData();
         }
         public void InspectorUpdate(ElementAttbutes attbutes)
         {
             elementAttbutes = attbutes;
-            for (int i = 0; i < elementAttbutes.attributes.Length; i++)
-            {
-                if (elementAttbutes.attributes[i]) SetInspectorActions[i].Invoke();
-            }
+            if (elementAttbutes.isShowName) UpdateName();
+            if (elementAttbutes.isShowPos || elementAttbutes.isShowRot || elementAttbutes.isShowSca) UpdateTransformDate();
         }
-        private string objName;
-        private string ObjName
+        private void UpdateName()
         {
-            get
-            {
-                return objName;
-            }
-            set
-            {
-                if (value != objName)
-                {
-                    objName = value;
-                    inputField_name.text = objName;
-                }
-            }
+            inputField_name.text = elementAttbutes.Name;
         }
-        private Vector3 objPos;
-        private Vector3 ObjPos
+        private void UpdateTransformDate()
         {
-            get
-            {
-                return objPos;
-            }
-            set
-            {
-                if (value != objPos)
-                {
-                    objPos = value;
-                    inputField_posX.text = ObjPos.x.ToString("0.00");
-                    inputField_posY.text = ObjPos.y.ToString("0.00");
-                    inputField_posZ.text = ObjPos.z.ToString("0.00");
-                }
-            }
+            inputField_posX.text = elementAttbutes.TransformData.V3Pos.X.ToString("0.00");
+            inputField_posY.text = elementAttbutes.TransformData.V3Pos.Y.ToString("0.00");
+            inputField_posZ.text = elementAttbutes.TransformData.V3Pos.Z.ToString("0.00");
+            inputField_scale.text = elementAttbutes.TransformData.V3Sca.Y.ToString("0.00");
+            inputField_rot.text = elementAttbutes.TransformData.V3Rot.Y.ToString("0.00");
         }
-        private float scale;
-        private float Scale
+        public List<AimPos> ListAimPos;
+        private void UpdateHumanData()
         {
-            get
+            if (ListAimPos.Count != 10) Debug.Log("aimlist count error");
+            if (elementAttbutes.PosArray.Count == 0) return;
+            for (int i = 0; i < elementAttbutes.PosArray.Count; i++)
             {
-                return scale;
+                ListAimPos[i].gameObject.SetActive(i < elementAttbutes.PosArray.Count);
+                if (i < elementAttbutes.PosArray.Count) ListAimPos[i].Init(elementAttbutes.PosArray[i]);
             }
-            set
-            {
-                if (value != scale)
-                {
-                    scale = value;
-                    inputField_scale.text = scale.ToString("0.00");
-                }
-            }
+            Toggle_isHumanWait.isOn = elementAttbutes.IsWait;
+            Toggle_isHumanRepeat.isOn = elementAttbutes.IsRepeat;
+            inputField_humanSpeed.text = elementAttbutes.Speed.ToString();
         }
-        private float rotate;
-        private float Rotate
+        private void UpdateCarAIData()
         {
-            get
-            {
-                return rotate;
-            }
-            set
-            {
-                if (value != rotate)
-                {
-                    rotate = value;
-                    inputField_rot.text = rotate.ToString("0.00");
-                }
-            }
+            inputField_carAIspeed.text = elementAttbutes.Speed.ToString();
         }
-        public List<AimPos> ListAimPos = new List<AimPos>();
-        private List<Vector3> humanPoses=new List<Vector3>();
-        private List<Vector3> HumanPoses
+        private void UpdateTrafficLightData()
         {
-            get
-            {
-                return humanPoses; 
-            }
-            set
-            {
-                int count = value.Count - ListAimPos.Count;
-                if (count > 0)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        ListAimPos.Add(Instantiate(AimPos, attGameObjects[4].transform).GetComponent<AimPos>());
-                    }
-                    HumanOther.SetAsLastSibling();
-                }
-                else if(count<0)
-                {
-                    for (int i = count; i < ListAimPos.Count; i++)
-                    {
-                        Destroy(ListAimPos[i].gameObject);
-                        ListAimPos.RemoveAt(i);
-                    }
-                }
-                if (value.Count == 0) return;
-                for (int i = 0; i < value.Count; i++)
-                {
-                    if (value[i] != ListAimPos[i].Value)
-                    {
-                        ListAimPos[i].Init(value[i]);
-                    }
-                }
-                Toggle_isHumanWait.isOn = elementAttbutes.humanAtt.isWait;
-                Toggle_isHumanRepeat.isOn = elementAttbutes.humanAtt.isRepeat;
-                inputField_humanSpeed.text = elementAttbutes.humanAtt.speed.ToString();
-            }
+            inputField_switchtime.text = elementAttbutes.SwitchTime.ToString("0.00");
+            inputField_waittime.text = elementAttbutes.WaitTime.ToString("0.00");
         }
-
-
-        private float switchTime;
-        private float SwitchTime
-        {
-            get
-            {
-                return switchTime;
-            }
-            set
-            {
-                if (value != switchTime)
-                {
-                    switchTime = value;
-                    inputField_switchtime.text = switchTime.ToString("0.00");
-                }
-            }
-        }
-        private float waitTime;
-        private float WaitTime
-        {
-            get
-            {
-                return waitTime;
-            }
-            set
-            {
-                if (value != waitTime)
-                {
-                    waitTime = value;
-                    inputField_waittime.text = waitTime.ToString("0.00");
-                }
-            }
-        }
-        private float speedCarAI;
-        private float SpeedCarAI
-        {
-            get
-            {
-                return speedCarAI;
-            }
-            set
-            {
-                if (value != speedCarAI)
-                {
-                    speedCarAI = value; 
-                    inputField_carAIspeed.text = speedCarAI.ToString();
-                }
-            }
-        }
-
         public UnityAction<ElementAttbutes> ElementUpdate=new UnityAction<ElementAttbutes>((value)=> { });
-
+        public UnityAction OnSwitchLight;
         public GameObject AimPos;
         public Transform HumanOther;
         public Toggle Toggle_isHumanRepeat;
@@ -251,6 +114,7 @@ namespace Assets.Scripts.SimuUI
         public InputField inputField_humanSpeed;
         public Button button_AddPos;
         public InputField inputField_name;
+
         public InputField inputField_posX;
         public InputField inputField_posY;
         public InputField inputField_posZ;
@@ -261,32 +125,18 @@ namespace Assets.Scripts.SimuUI
         public InputField inputField_waittime;
         private void Start()
         {
-            SetInspectorActions = new UnityAction[]
-            {
-                ()=>{ ObjName=elementAttbutes.name; },
-                ()=>{ ObjPos = elementAttbutes.pos;},
-                ()=>{ Rotate=elementAttbutes.rot; },
-                ()=>{ Scale =elementAttbutes.sca; },
-                ()=>{ HumanPoses=elementAttbutes.humanAtt.aimList; },
-                ()=>{ SwitchTime= elementAttbutes.trafficLigghtAtt.timeSwitch;
-                    waitTime=elementAttbutes.trafficLigghtAtt.timeWait;},
-                ()=>{ SpeedCarAI=elementAttbutes.carAIAtt.spdCarAI; },
-                ()=>{ btn_DeleteObj.gameObject.SetActive(elementAttbutes.canDelete);}
-            };
-
             cs.enabled = true;
             cs.verticalFit = ContentSizeFitter.FitMode.MinSize;
             inputField_name?.onEndEdit.AddListener((string value) =>
             {
-                elementAttbutes.name = value; 
+                elementAttbutes.Name = value; 
                 ElementUpdate.Invoke(elementAttbutes);
             });
             inputField_posX?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
-                    objPos.x = num;
-                    elementAttbutes.pos = objPos;
+                    elementAttbutes.TransformData.V3Pos.X = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -294,8 +144,7 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    objPos.y = num;
-                    elementAttbutes.pos = objPos;
+                    elementAttbutes.TransformData.V3Pos.Y = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -303,8 +152,7 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    objPos.z = num;
-                    elementAttbutes.pos = objPos;
+                    elementAttbutes.TransformData.V3Pos.Z = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -312,7 +160,7 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    elementAttbutes.rot = num;
+                    elementAttbutes.TransformData.V3Rot.Y = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -320,32 +168,33 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    elementAttbutes.sca = num;
+                    elementAttbutes.TransformData.V3Sca = new Vec3(num, num, num);
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
             Toggle_isHumanRepeat.onValueChanged.AddListener((bool value) =>
             {
-                elementAttbutes.humanAtt.isRepeat = value;
+                elementAttbutes.IsRepeat = value;
                 ElementUpdate.Invoke(elementAttbutes);
             });
             inputField_humanSpeed.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float speed))
                 {
-                    elementAttbutes.humanAtt.speed = speed;
+                    elementAttbutes.Speed = speed;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
 
             button_SwitchLight?.onClick.AddListener(() =>
             {
+                OnSwitchLight.Invoke();
             });
             inputField_switchtime?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
-                    elementAttbutes.trafficLigghtAtt.timeSwitch = num;
+                    elementAttbutes.SwitchTime = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -353,7 +202,7 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    elementAttbutes.trafficLigghtAtt.timeWait = num;
+                    elementAttbutes.WaitTime = num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });
@@ -361,7 +210,7 @@ namespace Assets.Scripts.SimuUI
             {
                 if (float.TryParse(value, out float num))
                 {
-                    elementAttbutes.carAIAtt.spdCarAI= num;
+                    elementAttbutes.Speed= num;
                     ElementUpdate.Invoke(elementAttbutes);
                 }
             });

@@ -18,7 +18,7 @@ namespace Assets.Scripts.SimuUI
                 return transform.GetSiblingIndex() - 1;
             }
         }
-        public Vector3 Value;
+        public Vec3 Value;
         public InputField inputField_X;
         public InputField inputField_Y;
         public Button btn_Delete;
@@ -33,7 +33,7 @@ namespace Assets.Scripts.SimuUI
                 {
                     if (float.TryParse(value, out float num))
                     {
-                        Value.x = num;
+                        Value.X = num;
                         SetInspector();
                     }
                 });
@@ -42,27 +42,27 @@ namespace Assets.Scripts.SimuUI
                 {
                     if (float.TryParse(value, out float num))
                     {
-                        Value.z = num; 
+                        Value.Z = num; 
                         SetInspector();
                     }
                 });
         }
-        public void Init(Vector3 pos)
+        public void Init(Vec3 pos)
         {
             Value = pos;
-            inputField_X.text = Value.x.ToString();
-            inputField_Y.text = Value.z.ToString();
+            inputField_X.text = Value.X.ToString();
+            inputField_Y.text = Value.Z.ToString();
             btn_Delete.onClick.RemoveAllListeners();
             btn_Delete.onClick.AddListener(() =>
             {
-                PanelInspector.Instance.elementAttbutes.humanAtt.aimList.RemoveAt(index);
+                PanelInspector.Instance.elementAttbutes.PosArray.RemoveAt(index);
                 PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
                 Destroy(gameObject);
             });
         }
         public void SetInspector()
         {
-            PanelInspector.Instance.elementAttbutes.humanAtt.aimList[index] = Value;
+            PanelInspector.Instance.elementAttbutes.PosArray[index] = Value;
             PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
         }
 
