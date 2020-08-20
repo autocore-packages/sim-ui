@@ -26,9 +26,9 @@ namespace Assets.Scripts.SimuUI
         /// <summary>
         /// CarData
         /// </summary>
-        public string PosStart { get; set; }
-        public string PosEnd { get; set; }
-        public string PosInit { get; set; }
+        public Vec3 PosStart { get; set; }
+        public Vec3 PosEnd { get; set; }
+        public Vec3 PosInit { get; set; }
         /// <summary>
         /// humanData
         /// </summary>
