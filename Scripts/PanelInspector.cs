@@ -87,7 +87,7 @@ namespace Assets.Scripts.SimuUI
         {
             if (ListAimPos.Count != 10) Debug.Log("aimlist count error");
             if (elementAttbutes.PosArray.Count == 0) return;
-            for (int i = 0; i < elementAttbutes.PosArray.Count; i++)
+            for (int i = 0; i < ListAimPos.Count; i++)
             {
                 ListAimPos[i].gameObject.SetActive(i < elementAttbutes.PosArray.Count);
                 if (i < elementAttbutes.PosArray.Count) ListAimPos[i].Init(elementAttbutes.PosArray[i]);
