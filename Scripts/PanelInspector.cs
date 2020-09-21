@@ -12,6 +12,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Assets.Scripts.simai;
 
 namespace Assets.Scripts.SimuUI
 {
@@ -47,40 +48,41 @@ namespace Assets.Scripts.SimuUI
 
         public Button btn_DeleteObj;
         public ContentSizeFitter cs;
+        private ElementObject elementObject;
 
         public void InspectorInit(ElementAttbutes attbutes)
         {
             SetPanelActive(true);
             elementAttbutes = attbutes;
-            attName.SetActive(elementAttbutes.isShowName);
-            attScale.SetActive(elementAttbutes.isShowSca);
-            attRot.SetActive(elementAttbutes.isShowRot);
-            attPos.SetActive(elementAttbutes.isShowPos);
-            attTrafficLight.SetActive(elementAttbutes.isShowTraffic);
-            attHuman.SetActive(elementAttbutes.isShowHuman);
-            attCarAI.SetActive(elementAttbutes.isShowCarAI);
-            attDelete.SetActive(elementAttbutes.isShowDelete);
-            if (elementAttbutes.isShowHuman) UpdateHumanData();
-            if (elementAttbutes.isShowCarAI) UpdateCarAIData();
-            if (elementAttbutes.isShowTraffic) UpdateTrafficLightData();
+            attName.SetActive(elementAttbutes.IsShowName);
+            attScale.SetActive(elementAttbutes.IsShowSca);
+            attRot.SetActive(elementAttbutes.IsShowRot);
+            attPos.SetActive(elementAttbutes.IsShowPos);
+            attTrafficLight.SetActive(elementAttbutes.IsShowSca);
+            attHuman.SetActive(elementAttbutes.IsShowHuman);
+            attCarAI.SetActive(elementAttbutes.IsShowCarAI);
+            attDelete.SetActive(elementAttbutes.IsShowDelete);
+            if (elementAttbutes.IsShowName) UpdateName();
+            if (elementAttbutes.IsShowHuman) UpdateHumanData();
+            if (elementAttbutes.IsShowCarAI) UpdateCarAIData();
+            if (elementAttbutes.IsShowDelete) UpdateTrafficLightData();
         }
         public void InspectorUpdate(ElementAttbutes attbutes)
         {
             elementAttbutes = attbutes;
-            if (elementAttbutes.isShowName) UpdateName();
-            if (elementAttbutes.isShowPos || elementAttbutes.isShowRot || elementAttbutes.isShowSca) UpdateTransformDate();
+            if (elementAttbutes.IsShowPos || elementAttbutes.IsShowRot || elementAttbutes.IsShowSca) UpdateTransformDate();
         }
         private void UpdateName()
         {
-            inputField_name.text = elementAttbutes.Name;
+            if (!inputField_name.isFocused) inputField_name.text = elementAttbutes.Name;
         }
         private void UpdateTransformDate()
         {
-            inputField_posX.text = elementAttbutes.TransformData.V3Pos.X.ToString("0.00");
-            inputField_posY.text = elementAttbutes.TransformData.V3Pos.Y.ToString("0.00");
-            inputField_posZ.text = elementAttbutes.TransformData.V3Pos.Z.ToString("0.00");
-            inputField_scale.text = elementAttbutes.TransformData.V3Sca.Y.ToString("0.00");
-            inputField_rot.text = elementAttbutes.TransformData.V3Rot.Y.ToString("0.00");
+            if (!inputField_posX.isFocused) inputField_posX.text = elementAttbutes.TransformData.V3Pos.X.ToString("0.00");
+            if (!inputField_posY.isFocused) inputField_posY.text = elementAttbutes.TransformData.V3Pos.Y.ToString("0.00");
+            if (!inputField_posZ.isFocused) inputField_posZ.text = elementAttbutes.TransformData.V3Pos.Z.ToString("0.00");
+            if (!inputField_scale.isFocused) inputField_scale.text = elementAttbutes.TransformData.V3Sca.Y.ToString("0.00");
+            if (!inputField_rot.isFocused) inputField_rot.text = elementAttbutes.TransformData.V3Rot.Y.ToString("0.00");
         }
         public List<AimPos> ListAimPos;
         private void UpdateHumanData()
@@ -105,7 +107,6 @@ namespace Assets.Scripts.SimuUI
             inputField_switchtime.text = elementAttbutes.SwitchTime.ToString("0.00");
             inputField_waittime.text = elementAttbutes.WaitTime.ToString("0.00");
         }
-        public UnityAction<ElementAttbutes> ElementUpdate=new UnityAction<ElementAttbutes>((value)=> { });
         public UnityAction OnSwitchLight;
         public GameObject AimPos;
         public Transform HumanOther;
@@ -129,15 +130,15 @@ namespace Assets.Scripts.SimuUI
             cs.verticalFit = ContentSizeFitter.FitMode.MinSize;
             inputField_name?.onEndEdit.AddListener((string value) =>
             {
-                elementAttbutes.Name = value; 
-                ElementUpdate.Invoke(elementAttbutes);
+                elementAttbutes.Name = value;
+                UpdateSelectedElementAttbutes();
             });
             inputField_posX?.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.TransformData.V3Pos.X = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_posY?.onEndEdit.AddListener((string value) =>
@@ -145,7 +146,7 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.TransformData.V3Pos.Y = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_posZ?.onEndEdit.AddListener((string value) =>
@@ -153,7 +154,7 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.TransformData.V3Pos.Z = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_rot?.onEndEdit.AddListener((string value) =>
@@ -161,7 +162,7 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.TransformData.V3Rot.Y = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_scale?.onEndEdit.AddListener((string value) =>
@@ -169,20 +170,20 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.TransformData.V3Sca = new Vec3(num, num, num);
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             Toggle_isHumanRepeat.onValueChanged.AddListener((bool value) =>
             {
                 elementAttbutes.IsRepeat = value;
-                ElementUpdate.Invoke(elementAttbutes);
+                UpdateSelectedElementAttbutes();
             });
             inputField_humanSpeed.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float speed))
                 {
                     elementAttbutes.Speed = speed;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
 
@@ -195,7 +196,7 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.SwitchTime = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_waittime?.onEndEdit.AddListener((string value) =>
@@ -203,7 +204,7 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.WaitTime = num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             inputField_carAIspeed?.onEndEdit.AddListener((string value) =>
@@ -211,10 +212,26 @@ namespace Assets.Scripts.SimuUI
                 if (float.TryParse(value, out float num))
                 {
                     elementAttbutes.Speed= num;
-                    ElementUpdate.Invoke(elementAttbutes);
+                    UpdateSelectedElementAttbutes();
                 }
             });
             SetPanelActive(false);
+        }
+        private void Update()
+        {
+            if (elementObject != ElementsManager.Instance.SelectedElement)
+            {
+                elementObject = ElementsManager.Instance.SelectedElement;
+                if (elementObject == null) SetPanelActive(false);
+                else
+                {
+                    InspectorInit(elementObject.GetObjAttbutes());
+                }
+            }
+        }
+        public void UpdateSelectedElementAttbutes()
+        {
+            ElementsManager.Instance.SelectedElement.SetObjAttbutes(elementAttbutes);
         }
     }
 }
