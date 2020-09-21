@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.simai;
 
 namespace Assets.Scripts.SimuUI
 {
@@ -56,14 +57,14 @@ namespace Assets.Scripts.SimuUI
             btn_Delete.onClick.AddListener(() =>
             {
                 PanelInspector.Instance.elementAttbutes.PosArray.RemoveAt(index);
-                PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
+                PanelInspector.Instance.UpdateSelectedElementAttbutes();
                 Destroy(gameObject);
             });
         }
         public void SetInspector()
         {
             PanelInspector.Instance.elementAttbutes.PosArray[index] = Value;
-            PanelInspector.Instance.ElementUpdate.Invoke(PanelInspector.Instance.elementAttbutes);
+            PanelInspector.Instance.UpdateSelectedElementAttbutes();
         }
 
         private void OnDestroy()

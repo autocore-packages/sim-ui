@@ -2,8 +2,9 @@
   "name": "com.autocore.sim-ui",
   "displayName": "SimuUI",
   "description": "UI of Simulator",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "license": "MIT",
   "dependencies": {
+    "com.autocore.sim-ai": "https://github.com/autocore-packages/sim-ai.git#1.0.4"
   }
 }
