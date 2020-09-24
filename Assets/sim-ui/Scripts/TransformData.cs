@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Assets.Scripts.simai;
-
-namespace Assets.Scripts.SimuUI
+﻿namespace Assets.Scripts.SimuUI
 {
     //public class Vec3
     //{
