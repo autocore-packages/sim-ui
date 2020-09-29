@@ -58,14 +58,14 @@ namespace Assets.Scripts.SimuUI
             attScale.SetActive(elementAttbutes.IsShowSca);
             attRot.SetActive(elementAttbutes.IsShowRot);
             attPos.SetActive(elementAttbutes.IsShowPos);
-            attTrafficLight.SetActive(elementAttbutes.IsShowSca);
+            attTrafficLight.SetActive(elementAttbutes.IsShowTraffic);
             attHuman.SetActive(elementAttbutes.IsShowHuman);
             attCarAI.SetActive(elementAttbutes.IsShowCarAI);
             attDelete.SetActive(elementAttbutes.IsShowDelete);
             if (elementAttbutes.IsShowName) UpdateName();
             if (elementAttbutes.IsShowHuman) UpdateHumanData();
             if (elementAttbutes.IsShowCarAI) UpdateCarAIData();
-            if (elementAttbutes.IsShowDelete) UpdateTrafficLightData();
+            if (elementAttbutes.IsShowTraffic) UpdateTrafficLightData();
         }
         public void InspectorUpdate(ElementAttbutes attbutes)
         {
