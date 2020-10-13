@@ -2,43 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.SimuUI
 {
     public class PanelTools : PanelBase<PanelTools>, ISimuPanel
     {
+        #region Buttons
+        public Button button_resetAll;
+        public Button button_resetEgo;
+        public Button button_addNPC;
+        public Button button_addPed;
+        public Button button_addObs;
+        public Button button_RemoveAll;
+        #endregion
         public Transform transform_menu;
-        public MenuLV1[] menuButtons
+        private ToolsMenuButton[] menuButtons;
+        public ToolsMenuButton[] MenuButtons
         {
             get
             {
-                MenuLV1[] list= GetComponentsInChildren<MenuLV1>();
-                return list;
+                if(menuButtons==null) menuButtons= GetComponentsInChildren<ToolsMenuButton>();
+                return menuButtons;
             }
         }
-
-        string[] menuNames = new string[]
-        {
-        "Reset",
-        "Elements",
-        "Set Car Pose",
-        "Settings",
-        "Help",
-        "Exit"
-        };
-        public UnityAction[] menuActions;
-
-        public List<string[]> menusNames = new List<string[]>
-    {
-        new string[]{"All Reset","Car Pose Reset" },
-        new string[]{"Add CarAI","Add Human", "Add Obstacle", "Remove All" }
-    };
-        public List<UnityAction[]> menusActions = new List<UnityAction[]>();
-
-        public string[] menuName1 = new string[] { "All Reset", "Car Reset" };
-
-        private MenuLV1 menuButtonSelected = null;
-        public MenuLV1 MenuButtonSelected
+        private ToolsMenuButton menuButtonSelected = null;
+        public ToolsMenuButton MenuButtonSelected
         {
             get
             {
@@ -55,18 +44,23 @@ namespace Assets.Scripts.SimuUI
         }
         void Start()
         {
+            button_resetAll = MenuButtons[0].transform.GetChild(0).GetChild(0).GetComponent<Button>();
+            button_resetEgo = MenuButtons[0].transform.GetChild(0).GetChild(1).GetComponent<Button>();
+            button_addNPC = MenuButtons[1].transform.GetChild(0).GetChild(0).GetComponent<Button>();
+            button_addPed = MenuButtons[1].transform.GetChild(0).GetChild(1).GetComponent<Button>();
+            button_addObs = MenuButtons[1].transform.GetChild(0).GetChild(2).GetComponent<Button>();
             CloseAllMenu();
         }
         public void OpenSeletedMenu()
         {
-            foreach (MenuLV1 button in menuButtons)
+            foreach (ToolsMenuButton button in MenuButtons)
             {
                 button.SetMenuActive(button == MenuButtonSelected && !menuButtonSelected.isOpen);
             }
         }
         public void CloseAllMenu()
         {
-            foreach (MenuLV1 button in menuButtons)
+            foreach (ToolsMenuButton button in MenuButtons)
             {
                 button.SetMenuActive(false);
             }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Assets.Scripts.SimuUI
 {
     [RequireComponent(typeof(Button))]
-    public class MenuLV1 : MonoBehaviour
+    public class ToolsMenuButton : MonoBehaviour
     {
         public Button button;
         public GameObject targetGO;
