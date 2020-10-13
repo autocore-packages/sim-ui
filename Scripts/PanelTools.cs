@@ -44,11 +44,11 @@ namespace Assets.Scripts.SimuUI
         }
         void Start()
         {
-            button_resetAll = MenuButtons[0].transform.GetChild(0).GetChild(0).GetComponent<Button>();
-            button_resetEgo = MenuButtons[0].transform.GetChild(0).GetChild(1).GetComponent<Button>();
-            button_addNPC = MenuButtons[1].transform.GetChild(0).GetChild(0).GetComponent<Button>();
-            button_addPed = MenuButtons[1].transform.GetChild(0).GetChild(1).GetComponent<Button>();
-            button_addObs = MenuButtons[1].transform.GetChild(0).GetChild(2).GetComponent<Button>();
+            button_resetAll = MenuButtons[0].transform.GetChild(1).GetChild(0).GetComponent<Button>();
+            button_resetEgo = MenuButtons[0].transform.GetChild(1).GetChild(1).GetComponent<Button>();
+            button_addNPC = MenuButtons[1].transform.GetChild(1).GetChild(0).GetComponent<Button>();
+            button_addPed = MenuButtons[1].transform.GetChild(1).GetChild(1).GetComponent<Button>();
+            button_addObs = MenuButtons[1].transform.GetChild(1).GetChild(2).GetComponent<Button>();
             CloseAllMenu();
         }
         public void OpenSeletedMenu()
