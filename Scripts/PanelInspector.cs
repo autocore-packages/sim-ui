@@ -178,6 +178,11 @@ namespace Assets.Scripts.SimuUI
                 elementAttbutes.IsRepeat = value;
                 UpdateSelectedElementAttbutes();
             });
+            Toggle_isHumanWait.onValueChanged.AddListener((bool value) =>
+            {
+                elementAttbutes.IsWait = value;
+                UpdateSelectedElementAttbutes();
+            });
             inputField_humanSpeed.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out float speed))
