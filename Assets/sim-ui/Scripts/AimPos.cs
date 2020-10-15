@@ -58,7 +58,6 @@ namespace Assets.Scripts.SimuUI
             {
                 PanelInspector.Instance.elementAttbutes.PosArray.RemoveAt(index);
                 PanelInspector.Instance.UpdateSelectedElementAttbutes();
-                Destroy(gameObject);
             });
         }
         public void SetInspector()
