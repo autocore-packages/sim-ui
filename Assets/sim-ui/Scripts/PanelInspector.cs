@@ -49,6 +49,11 @@ namespace Assets.Scripts.SimuUI
         public Button btn_DeleteObj;
         public ContentSizeFitter cs;
         private ElementObject elementObject;
+        public void OnChangeElement(ElementObject obj)
+        {
+            elementObject = obj;
+            InspectorInit();
+        }
 
         public void InspectorInit()
         {
