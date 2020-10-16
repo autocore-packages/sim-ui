@@ -50,10 +50,10 @@ namespace Assets.Scripts.SimuUI
         public ContentSizeFitter cs;
         private ElementObject elementObject;
 
-        public void InspectorInit(ElementAttbutes attbutes)
+        public void InspectorInit()
         {
             SetPanelActive(true);
-            elementAttbutes = attbutes;
+            elementAttbutes = elementObject.GetObjAttbutes();
             attName.SetActive(elementAttbutes.IsShowName);
             attScale.SetActive(elementAttbutes.IsShowSca);
             attRot.SetActive(elementAttbutes.IsShowRot);
@@ -67,9 +67,9 @@ namespace Assets.Scripts.SimuUI
             if (elementAttbutes.IsShowCarAI) UpdateCarAIData();
             if (elementAttbutes.IsShowTraffic) UpdateTrafficLightData();
         }
-        public void InspectorUpdate(ElementAttbutes attbutes)
+        public void InspectorUpdate()
         {
-            elementAttbutes = attbutes;
+            elementAttbutes = elementObject.GetObjAttbutes();
             if (elementAttbutes.IsShowPos || elementAttbutes.IsShowRot || elementAttbutes.IsShowSca) UpdateTransformDate();
         }
         private void UpdateName()
@@ -87,7 +87,7 @@ namespace Assets.Scripts.SimuUI
         public List<AimPos> ListAimPos;
         private void UpdateHumanData()
         {
-            if (ListAimPos.Count != 10) Debug.Log("aimlist count error");
+            if (ListAimPos.Count != 10) Debug.LogError("aimlist count error");
             if (elementAttbutes.PosArray.Count == 0) return;
             for (int i = 0; i < ListAimPos.Count; i++)
             {
@@ -230,7 +230,7 @@ namespace Assets.Scripts.SimuUI
                 if (elementObject == null) SetPanelActive(false);
                 else
                 {
-                    InspectorInit(elementObject.GetObjAttbutes());
+                    InspectorInit();
                 }
             }
         }
