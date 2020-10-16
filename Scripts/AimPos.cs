@@ -12,7 +12,7 @@ namespace Assets.Scripts.SimuUI
 {
     public class AimPos : MonoBehaviour
     {
-        public int index
+        public int Index
         {
             get
             {
@@ -56,13 +56,14 @@ namespace Assets.Scripts.SimuUI
             btn_Delete.onClick.RemoveAllListeners();
             btn_Delete.onClick.AddListener(() =>
             {
-                PanelInspector.Instance.elementAttbutes.PosArray.RemoveAt(index);
+                PanelInspector.Instance.elementAttbutes.PosArray.RemoveAt(Index);
                 PanelInspector.Instance.UpdateSelectedElementAttbutes();
+                PanelInspector.Instance.InspectorInit();
             });
         }
         public void SetInspector()
         {
-            PanelInspector.Instance.elementAttbutes.PosArray[index] = Value;
+            PanelInspector.Instance.elementAttbutes.PosArray[Index] = Value;
             PanelInspector.Instance.UpdateSelectedElementAttbutes();
         }
 
