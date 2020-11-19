@@ -13,8 +13,9 @@ namespace Assets.Scripts.SimuUI
         public Button btn_ExitSimu;
         public Button btn_Cancle;
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             SetPanelActive(false);
             btn_Cancle.onClick.AddListener(() =>
             {

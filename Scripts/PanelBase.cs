@@ -16,6 +16,9 @@ namespace Assets.Scripts.SimuUI
         protected virtual void Awake()
         {
             Instance = (T)this;
+        }
+        protected virtual void Start()
+        {
             SetPanelActive(isActive);
         }
         public bool isActive;

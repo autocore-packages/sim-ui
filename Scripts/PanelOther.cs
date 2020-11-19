@@ -12,10 +12,6 @@ namespace Assets.Scripts.SimuUI
         public Text text_mousePos;
         public Text text_name;
         // Start is called before the first frame update
-        void Start()
-        {
-
-        }
 
         private float timeTemp;
         private float time_tipTemp;

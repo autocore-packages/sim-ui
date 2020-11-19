@@ -28,9 +28,9 @@ namespace Assets.Scripts.SimuUI
                 return anim_PanelMessage;
             }
         }
-        // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             ms = GetComponent<MessageShow>();
             btn_MessagePanelHide?.onClick.AddListener(() =>
             {

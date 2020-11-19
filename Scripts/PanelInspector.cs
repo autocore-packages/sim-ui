@@ -129,8 +129,9 @@ namespace Assets.Scripts.SimuUI
         public Button button_SwitchLight;
         public InputField inputField_switchtime;
         public InputField inputField_waittime;
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             cs.enabled = true;
             cs.verticalFit = ContentSizeFitter.FitMode.MinSize;
             inputField_name?.onEndEdit.AddListener((string value) =>
@@ -229,7 +230,7 @@ namespace Assets.Scripts.SimuUI
         }
         private void Update()
         {
-            if (elementObject != ElementsManager.Instance.SelectedElement)
+            if (ElementsManager.Instance!=null && elementObject != ElementsManager.Instance.SelectedElement)
             {
                 elementObject = ElementsManager.Instance.SelectedElement;
                 if (elementObject == null) SetPanelActive(false);

@@ -16,8 +16,9 @@ namespace Assets.Scripts.SimuUI
             private set;
         }
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             IsSetTarget = false;
             SetPanelActive(false);
             button_Close?.onClick.AddListener(() => { SetPanelActive(false); });

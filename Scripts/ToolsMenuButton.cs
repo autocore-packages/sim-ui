@@ -14,7 +14,7 @@ namespace Assets.Scripts.SimuUI
         {
             get
             {
-                if (panel == null)
+                if (panel != null)
                 {
                     return panel.IsPanelActive();
                 }
@@ -29,8 +29,7 @@ namespace Assets.Scripts.SimuUI
             m_button = GetComponent<Button>();
             m_button.onClick.AddListener(() =>
             {
-                PanelTools.Instance.CloseAllMenu();
-                SwitchMenuActive();
+                PanelTools.Instance.CloseAllMenu(this);
             });
             if (targetGO == null) targetGO = transform.GetChild(1).gameObject;
             var p= targetGO.GetComponent<ISimuPanel>();
