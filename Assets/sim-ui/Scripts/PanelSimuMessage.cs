@@ -13,8 +13,9 @@ namespace Assets.Scripts.SimuUI
         public Text text_FPS;
         public Text text_mode;
         public Text text_Control;
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             text_version.text = Application.version;
             button_exit?.onClick.AddListener(() =>
             {

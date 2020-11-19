@@ -27,8 +27,9 @@ namespace Assets.Scripts.SimuUI
         public Slider slider_maxTorque;
         public Text text_maxSpeed;
         public Slider slider_maxSpeed;
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             InitResolutionItem();
             btn_close?.onClick.AddListener(() => { SetPanelActive(false); });
             toggle_isFullScreen?.onValueChanged.AddListener((bool value) => { isFullScreen = value; SetScreenResolution(); });

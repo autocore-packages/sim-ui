@@ -18,9 +18,9 @@ namespace Assets.Scripts.SimuUI
                 return anim_PanelCamera;
             }
         }
-        // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             btn_CameraPanelHide?.onClick.AddListener(() =>
             {
                 isActive = !isActive;

@@ -18,8 +18,9 @@ namespace Assets.Scripts.SimuUI
         public Text text_NameNotice;
         private bool isNameLegal;
         private string modeName;
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             PanelInit();
         }
         public void PanelInit()
