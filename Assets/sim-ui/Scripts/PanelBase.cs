@@ -6,27 +6,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.SimuUI
 {
-    public class PanelBase<T> : MonoBehaviour where T : PanelBase<T>
+    public class PanelBase<T> : MonoBehaviour where T : PanelBase<T>, ISimuPanel 
     {
-        private static T _instance = null;
         public static T Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType(typeof(T)) as T;
-                }
-                if (_instance == null)
-                {
-                    Debug.Log("null");
-                }
-                return _instance;
-            }
+            get;
+            private set;
         }
         protected virtual void Awake()
         {
-            _instance = (T)this;
+            Instance = (T)this;
             SetPanelActive(isActive);
         }
         public bool isActive;
@@ -34,6 +23,10 @@ namespace Assets.Scripts.SimuUI
         {
             isActive = !isActive;
             SetPanelActive(isActive);
+        }
+        public bool IsPanelActive()
+        {
+            return isActive;
         }
         public virtual void SetPanelActive(bool value)
         {
