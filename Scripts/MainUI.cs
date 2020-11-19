@@ -4,26 +4,16 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.SimuUI
 {
     public class MainUI : PanelBase<MainUI>, ISimuPanel
     {
         public bool isMouseOnUI;
-        private void Start()
-        {
-            Application.targetFrameRate = 60;
-        }
-
-        private float timeTemp;
-        private float time_tipTemp;
         private void Update()
         {
             isMouseOnUI = EventSystem.current.IsPointerOverGameObject();
@@ -59,7 +49,6 @@ namespace Assets.Scripts.SimuUI
             {
                 Debug.Log("null");
             }
-            else Debug.Log(go.name);
             Instantiate(go);
         }
     }

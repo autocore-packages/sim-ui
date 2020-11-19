@@ -7,37 +7,55 @@ namespace Assets.Scripts.SimuUI
     [RequireComponent(typeof(Button))]
     public class ToolsMenuButton : MonoBehaviour
     {
-        public Button button;
+        public Button m_button;
         public GameObject targetGO;
-        public GameObject TargetGO
+        public ISimuPanel panel;
+        public bool IsOpen
         {
             get
             {
-                if(targetGO==null)
-                    targetGO = transform.GetChild(1).gameObject;
-                return targetGO;
+                if (panel == null)
+                {
+                    return panel.IsPanelActive();
+                }
+                else
+                {
+                    return targetGO.activeSelf;
+                }
             }
         }
-        public bool isOpen;
         void Start()
         {
-            button = GetComponent<Button>();
-            button.onClick.AddListener(() =>
+            m_button = GetComponent<Button>();
+            m_button.onClick.AddListener(() =>
             {
-                PanelTools.Instance.MenuButtonSelected = this;
+                PanelTools.Instance.CloseAllMenu();
+                SwitchMenuActive();
             });
+            if (targetGO == null) targetGO = transform.GetChild(1).gameObject;
+            var p= targetGO.GetComponent<ISimuPanel>();
+            if (p != null) panel = p;
         }
         public void SetMenuActive(bool isActive)
         {
-            isOpen = isActive;
-            var panel = TargetGO.GetComponent<ISimuPanel>();
             if (panel != null)
             {
-                panel.SetPanelActive(isOpen);
+                panel.SetPanelActive(isActive);
             }
             else
             {
-                TargetGO.SetActive(isOpen);
+                targetGO.SetActive(isActive);
+            }
+        }
+        public void SwitchMenuActive()
+        {
+            if (panel != null)
+            {
+                panel.SetPanelActive(!IsOpen);
+            }
+            else
+            {
+                targetGO.SetActive(!IsOpen);
             }
         }
 
