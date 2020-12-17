@@ -99,7 +99,6 @@ namespace Assets.Scripts.SimuUI
                 ListAimPos[i].gameObject.SetActive(i < elementAttbutes.PosArray.Count);
                 if (i < elementAttbutes.PosArray.Count) ListAimPos[i].Init(elementAttbutes.PosArray[i]);
             }
-            Toggle_isHumanWait.isOn = elementAttbutes.IsWait;
             Toggle_isHumanRepeat.isOn = elementAttbutes.IsRepeat;
             inputField_humanSpeed.text = elementAttbutes.Speed.ToString();
         }
@@ -116,7 +115,6 @@ namespace Assets.Scripts.SimuUI
         public GameObject AimPos;
         public Transform HumanOther;
         public Toggle Toggle_isHumanRepeat;
-        public Toggle Toggle_isHumanWait;
         public InputField inputField_humanSpeed;
         public Button button_AddPos;
         public InputField inputField_name;
@@ -182,11 +180,6 @@ namespace Assets.Scripts.SimuUI
             Toggle_isHumanRepeat.onValueChanged.AddListener((bool value) =>
             {
                 elementAttbutes.IsRepeat = value;
-                UpdateSelectedElementAttbutes();
-            });
-            Toggle_isHumanWait.onValueChanged.AddListener((bool value) =>
-            {
-                elementAttbutes.IsWait = value;
                 UpdateSelectedElementAttbutes();
             });
             inputField_humanSpeed.onEndEdit.AddListener((string value) =>
