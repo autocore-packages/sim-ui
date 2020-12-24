@@ -235,7 +235,7 @@ namespace Assets.Scripts.SimuUI
         }
         public void UpdateSelectedElementAttbutes()
         {
-            ElementsManager.Instance.SelectedElement.SetObjAttbutes(elementAttbutes);
+            ElementsManager.Instance.SelectedElement.SetObjWithAttbute(elementAttbutes);
         }
     }
 }
