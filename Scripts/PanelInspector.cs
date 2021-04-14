@@ -3,16 +3,11 @@
  * Copyright (c) 2018 AutoCore
  */
 #endregion
-using SyntaxTree.VisualStudio.Unity.Bridge;
-using System;
+using Assets.Scripts.simai;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Assets.Scripts.simai;
 
 namespace Assets.Scripts.SimuUI
 {
